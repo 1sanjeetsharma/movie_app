@@ -92,21 +92,25 @@ function App() {
         </header>
         <Serach searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <section className='trending'>
-          <h2 className='mt-[40px]'>Trending Movies</h2>
-          {isTrendingLoading ? (<Spinner />) :
-            errorTrendingMessage ? (<p className='text-red-500'>{errorTrendingMessage}</p>) : (
-              (
-                <ul>
-                  {
-                    trendingMovieList.map((movie, index) => (
-                      <li key={movie.id}>
-                        <p>{index + 1}</p>
-                        <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : '/no-movie.png'} alt={movie.title} />
-                      </li>
-                    ))}
-                </ul>
-              )
-            )}
+          {searchTerm === '' ? (
+            <>
+              <h2 className='mt-[40px]'>Trending Movies</h2>
+              {isTrendingLoading ? (<Spinner />) :
+                errorTrendingMessage ? (<p className='text-red-500'>{errorTrendingMessage}</p>) : (
+                  (
+                    <ul>
+                      {
+                        trendingMovieList.map((movie, index) => (
+                          <li key={movie.id}>
+                            <p>{index + 1}</p>
+                            <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : '/no-movie.png'} alt={movie.title} />
+                          </li>
+                        ))}
+                    </ul>
+                  )
+                )}
+            </>
+          ) : ''}
         </section>
         <section className='all-movies'>
           <h2 className='mt-[40px]'>All Movies</h2>
