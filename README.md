@@ -35,7 +35,7 @@
 - TMDB API
 
 react-use (for debouncing)
-
+```
 📂 Project Structure
 movie_app/
 │
@@ -58,16 +58,7 @@ movie_app/
 ├── .env
 ├── package.json
 └── vite.config.js
-## 📸 Screenshots
-
-### 🏠 Home Page
-![Home Page](./screenshots/home.png)
-
-### 🔍 Search Feature
-![Search Feature](./screenshots/search.png)
-
-### 📈 Trending Movies
-![Trending Movies](./screenshots/trending.png)
+```
 
 🔑 Environment Variables
 
@@ -143,3 +134,13 @@ This project is open source and available under the MIT License.
 
 Sanjeet Sharma
 GitHub: https://github.com/1sanjeetsharma
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home Page](./screenshots/home.png)
+
+### 🔍 Search Feature
+![Search Feature](./screenshots/search.png)
+
+### 📈 Trending Movies
+![Trending Movies](./screenshots/trending.png)
