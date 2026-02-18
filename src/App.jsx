@@ -10,8 +10,11 @@ import { useDebounce } from 'react-use';
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [errorTrendingMessage, setErrorTrendingMessage] = useState('');
   const [movieList, setMovieList] = useState([]);
+  const [trendingMovieList, setTrendingMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTrendingLoading, setIsTrendingLoading] = useState(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
@@ -25,6 +28,29 @@ function App() {
       Authorization: `Bearer ${API_KEY}`
     }
   };
+  const fetchTrendingMovies = async () => {
+    setErrorTrendingMessage("");
+    setIsTrendingLoading(true);
+    try {
+      const endpoint = `${API_BASE_URL}/trending/all/day?language=en-US`
+      const response = await fetch(endpoint, API_OPTIONS);
+      if (!response.ok) {
+        throw new Error('failed to fetch trending movies');
+      }
+      const data = await response.json();
+      if (data.response === "False") {
+        setErrorTrendingMessage(data.Error || 'Failed to fetch Trending movies');
+        setTrendingMovieList([]);
+        return;
+      }
+      setTrendingMovieList(data.results.slice(0, 6));
+      console.log("Trending Movies:", data)
+    } catch (error) {
+      console.log('error Fetching trending movies')
+    } finally {
+      setIsTrendingLoading(false);
+    }
+  }
   const fetchMovies = async (query = '') => {
     setIsLoading(true);
     setErrorMessage('');
@@ -53,16 +79,35 @@ function App() {
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
+  useEffect(() => {
+    fetchTrendingMovies();
+  }, [])
   return (
     <>
       <div className='pattern' />
       <div className='wrapper' >
-        <img src="./logo.png" alt="Logo" height={"66px"} width={"90px"} />
         <header>
           <img src="./hero.png" alt="Hero Banner" />
           <h1> Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle </h1>
         </header>
         <Serach searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <section className='trending'>
+          <h2 className='mt-[40px]'>Trending Movies</h2>
+          {isTrendingLoading ? (<Spinner />) :
+            errorTrendingMessage ? (<p className='text-red-500'>{errorTrendingMessage}</p>) : (
+              (
+                <ul>
+                  {
+                    trendingMovieList.map((movie, index) => (
+                      <li key={movie.id}>
+                        <p>{index + 1}</p>
+                        <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : '/no-movie.png'} alt={movie.title} />
+                      </li>
+                    ))}
+                </ul>
+              )
+            )}
+        </section>
         <section className='all-movies'>
           <h2 className='mt-[40px]'>All Movies</h2>
           {isLoading ? (<Spinner />) :
