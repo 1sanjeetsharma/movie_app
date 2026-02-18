@@ -1,4 +1,6 @@
-🎬 Movie App
+#🎬 Movie Canvas  
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://your-site-name.netlify.app](https://moviecanvas.netlify.app/))
 
 - A modern movie discovery application built with React + Vite that allows users to:
 
